@@ -1,0 +1,40 @@
+ackage at.mms.hot_cold;
+
+
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v4.app.Fragment;
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.os.Build;
+
+public class LoginGame extends ActionBarActivity {
+	private Button enterButton;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_login);
+		enterButton= (Button) findViewById(R.id.buttonEnter);
+		
+		
+        enterButton.setOnClickListener(new View.OnClickListener() {
+        	@Override
+        	public void onClick(View v) {
+				//Toast.makeText(getApplicationContext(), "toast clicked", Toast.LENGTH_SHORT).show();
+        			Intent intent =
+        			new Intent(getApplicationContext(), Game.class);
+        			startActivity(intent);
+            }
+           }); 
+	}
+
+	
+
+}

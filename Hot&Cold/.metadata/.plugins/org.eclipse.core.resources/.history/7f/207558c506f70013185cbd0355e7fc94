@@ -1,0 +1,287 @@
+package at.mms.hot_cold;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.UnknownHostException;
+import java.util.LinkedList;
+
+import android.app.ListActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+import at.mms.hot_cold.tools.Client;
+
+public class Create_Game extends ListActivity {
+	private Button newHintButton;
+	private Button newGameButton;
+	boolean textValid= false, connected=true;
+	static int counter =0;
+	static String GameName="";
+	private ListView lv;
+    String Hintlist="";
+    private ArrayAdapter<String> adapt;
+    LinkedList<String> hintLinkedList= new LinkedList<String>();
+    boolean click=false;
+    Intent in = getIntent();
+    Client c;
+    
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_create__game);
+
+    	lv = getListView();
+        lv.setTextFilterEnabled(true);
+        lv.setVisibility(View.VISIBLE);
+
+        lv.setOnItemClickListener(new OnItemClickListener() {
+        	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        
+               String file=((TextView) view).getText().toString();
+               try {
+            	   	FileInputStream fos1 = openFileInput(file);
+            	   	InputStreamReader input = new InputStreamReader(fos1);
+            	   	BufferedReader buffered= new BufferedReader(input);
+            	   	StringBuilder sb= new StringBuilder();
+            	   	String line;
+            	   	
+            	   	while ((line=buffered.readLine()) != null){
+            	   		sb.append(line);
+            	   	}
+            	   	fos1.close();
+               
+               } catch (FileNotFoundException e) {
+            	   Toast.makeText(getApplicationContext(), "File " + file + "not found", Toast.LENGTH_SHORT).show();
+               } catch (IOException e) {
+            	   Toast.makeText(getApplicationContext(), "IO Exception",Toast.LENGTH_SHORT).show();
+               }
+        	}
+        
+        });
+        
+        
+        
+		setContentView(R.layout.activity_create__game);
+		final EditText editText = (EditText) findViewById(R.id.newUsername);
+		
+		newHintButton= (Button) findViewById(R.id.buttonNewHint);
+		newGameButton= (Button) findViewById(R.id.create_game);
+        
+		newHintButton.setOnClickListener(new View.OnClickListener() {
+        	@Override
+        	public void onClick(View v) {
+        		if( editText.getText().toString().length() == 0 )
+        			editText.setError( "A valid name is required" );
+        		else if (!editText.getText().toString().matches("[a-zA-Z0-9 ]+")) 
+        			editText.setError("Accept Alphabets and Numbers Only.");
+        		else {
+        			textValid = true;
+        		}
+        		
+        			
+   	        					
+        		if(textValid){
+        			Thread t = new Thread() {
+	        				public void run() {
+	        					
+	        					c = new Client();
+	        					try {
+	        						c.connect();
+	        						c.newGame(editText.getText().toString());
+	        						System.out.println("CONNECTING");
+	        						
+	        					} catch (UnknownHostException e) {
+	        						connected = false;
+	        						e.printStackTrace();
+	        						return;
+	        					} catch (IOException e) {
+	        						connected = false;
+	        						e.printStackTrace();
+	        						return;
+	        					} catch (InterruptedException e) {
+	        						connected = false;
+	        						e.printStackTrace();
+	        						return;
+	        					}
+	        				}
+	        			};
+	        			t.start();
+	        			if(!connected){
+	        				Toast.makeText(getApplicationContext(), "Connection problem!", Toast.LENGTH_SHORT).show();
+	        				connected = true;
+	        				return;
+	        			}
+        			counter++;
+        			GameName = editText.getText().toString();
+        			editText.setKeyListener(null);
+        			Intent intent =	new Intent(getApplicationContext(), Create_Hints.class); 
+        			try {
+        	        intent.putExtra("Game", createHintName());
+        	        }
+        			
+        			catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					
+        			}
+        			startActivityForResult(intent, 1);
+        			}
+        		else{
+        			Toast.makeText(getApplicationContext(), "Try with a valid name", Toast.LENGTH_SHORT).show();
+        		}
+        		
+        	}
+           });
+       
+		newGameButton.setOnClickListener(new View.OnClickListener() {
+        	@Override
+        	public void onClick(View v) {
+        		if(counter>0){
+        			counter=0;
+        			GameName="";
+        			hintLinkedList.remove();
+        			lv.setVisibility(View.INVISIBLE);
+        			editText.setText("");
+        			
+        			try {
+						c.closeConnection();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+        			
+        			Intent intent =
+        		           new Intent(getApplicationContext(), Game.class);
+        		           startActivity(intent);
+        		           }
+        		else{
+        			Toast.makeText(getApplicationContext(), "Try to write a valid hint", Toast.LENGTH_SHORT).show();
+        		}
+        	}
+           });
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.create__game, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	String mCurrentGamePath;
+
+    static String createHintName() throws IOException {
+        String newHint = GameName+"#"+counter;
+
+        // Save a file: path for use with ACTION_VIEW intents
+        //mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return newHint;
+
+    }
+   
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+      /*  if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                String result=data.getStringExtra("NewHint");
+
+                hintLinkedList.add(result);
+
+        		String[] flist=hintLinkedList.toArray(new String[hintLinkedList.size()]);
+                adapt = new ArrayAdapter<String>(this, R.layout.list_item, flist);
+                setListAdapter(adapt);
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }*/
+    	if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                String result=data.getStringExtra("paths");
+                String[]paths;
+                paths=result.split("\\$");
+
+    	        click=true;
+	     		Toast.makeText(getApplicationContext(),result, Toast.LENGTH_SHORT).show();
+				//get the created hint into the list
+                hintLinkedList.add(paths[1]);
+        		String[] flist=hintLinkedList.toArray(new String[hintLinkedList.size()]);
+                adapt = new ArrayAdapter<String>(this, R.layout.list_item, flist);
+                setListAdapter(adapt);
+                if(data != null) {
+ 		  	        try {
+ 						sendHints(paths);
+ 					} catch (UnknownHostException e) {
+ 						e.printStackTrace();
+ 					} catch (IOException e) {
+ 						e.printStackTrace();
+ 					} catch (InterruptedException e) {
+ 						e.printStackTrace();
+ 					}
+ 		  	       
+ 		  	    }	 
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+        
+	         
+			
+    }
+
+    
+   private void sendHints(String[] paths) throws UnknownHostException, IOException, InterruptedException {
+    	
+    	for(int i = 1; i<paths.length; i++){
+	        System.out.println(paths[i]);
+    		String str = paths[i];
+     		Toast.makeText(getApplicationContext(),str, Toast.LENGTH_SHORT).show();
+	        if(str.startsWith("la")){
+	        	String str1=paths[i+1].substring(paths[i].length() - 3);
+	        	c.sendCoord(str,str1);
+	        }
+    		if(str.startsWith("img")){
+    			str.substring(3);
+					c.sendImage(paths[i]);
+	        } else if (str.startsWith("3gp")){
+	        	str.substring(3);
+					c.sendAudio(paths[i]);
+	        }else if (str.startsWith("txt")){
+	        	str.substring(3);
+				c.sendText(paths[i]);
+	        } else {
+	     		Toast.makeText(getApplicationContext(),"we do not recognize this type", Toast.LENGTH_SHORT).show();
+					//c.sendText(paths[i]);
+					 
+	        } 
+	         }
+			
+    	c.done("hint");
+		
+    }
+}

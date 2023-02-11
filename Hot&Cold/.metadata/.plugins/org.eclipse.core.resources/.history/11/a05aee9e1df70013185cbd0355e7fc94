@@ -1,0 +1,66 @@
+package at.mms.hot_cold;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+import android.app.Activity;
+import android.content.Intent;
+
+public class Game extends Activity {
+	private ListView lv;
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_choose_game);
+		lv = getListView();
+        lv.setTextFilterEnabled(true);
+        lv.setVisibility(View.VISIBLE);
+
+        lv.setOnItemClickListener(new OnItemClickListener() {
+        	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        
+               String file=((TextView) view).getText().toString();
+               try {
+            	   	FileInputStream fos1 = openFileInput(file);
+            	   	InputStreamReader input = new InputStreamReader(fos1);
+            	   	BufferedReader buffered= new BufferedReader(input);
+            	   	StringBuilder sb= new StringBuilder();
+            	   	String line;
+            	   	
+            	   	while ((line=buffered.readLine()) != null){
+            	   		sb.append(line);
+            	   	}
+            	   	fos1.close();
+               
+               } catch (FileNotFoundException e) {
+            	   Toast.makeText(getApplicationContext(), "File " + file + "not found", Toast.LENGTH_SHORT).show();
+               } catch (IOException e) {
+            	   Toast.makeText(getApplicationContext(), "IO Exception",Toast.LENGTH_SHORT).show();
+               }
+        	}
+        
+        });
+        
+		Intent in = getIntent();
+        String tv1= in.getExtras().getString("Game");
+	}
+	
+//	 @Override
+    public void onBackPressed() {
+    	 Log.d("CDA", "onBackPressed Called");
+    	 finish();
+    	 Intent intent = new Intent(getApplicationContext(), Login.class);
+     	 startActivity(intent);
+    }
+	
+}

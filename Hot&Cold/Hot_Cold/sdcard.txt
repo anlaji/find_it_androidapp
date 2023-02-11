@@ -1,0 +1,17 @@
+sd-card:
+
+- know the path to your eclipse directory
+- open cmd.exe
+- change directory to eclipse directory/sdk/tools
+- mksdcard 512M sdcard1.iso (creates a sd-card with 512 megabyes and the name sdcard1.iso)
+- in eclipse, open the virtual device manager and edit the device
+- in the settings, select the sd-card created before
+
+
+to copy files from/to the sd-card:
+
+- start the emulator
+- in eclipse, windows -> open perspective -> ddms
+- open tab "file explorer"
+- sd-card is /mnt/sdcard, /storage/sdcard or something like that (depending on the virtual device android version)
+- select a folder and use the icons above to push or pull a file to or from the device

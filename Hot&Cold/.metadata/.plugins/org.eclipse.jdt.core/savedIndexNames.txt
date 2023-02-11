@@ -1,0 +1,4 @@
+INDEX VERSION 1.126+C:\Users\Angela\Desktop\Hot&Cold\.metadata\.plugins\org.eclipse.jdt.core
+3515282563.index
+2614874477.index
+2527374961.index

@@ -1,0 +1,80 @@
+package at.mms.hot_cold;
+import java.io.IOException;
+import java.net.UnknownHostException;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import at.mms.hot_cold.tools.Client;
+
+public class CreatePlayer extends ActionBarActivity{
+
+	private Button newPlayerButton;
+	String user,ps="";
+	private boolean connected = true;
+	
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_create_player);
+
+		final EditText userText = (EditText) findViewById(R.id.newUsername);
+		final EditText passText = (EditText) findViewById(R.id.newPassword); 
+		newPlayerButton= (Button) findViewById(R.id.new_player_button);
+	
+		 newPlayerButton.setOnClickListener(new View.OnClickListener() {
+	        	@Override
+	        	public void onClick(View v) {
+	        		if(userText.getText().toString()!= null && passText.getText().toString()!=null){
+	        			
+	        			Thread t = new Thread() {
+	        				public void run() {
+	        					Client c;
+	        					c = new Client();
+	        					
+	        					try {
+	        						c.connect();
+	        						c.createPlayer(userText.getText().toString(), passText.getText().toString());
+	        						
+	        						System.out.println("CONNECTING");
+	        						
+	        					} catch (UnknownHostException e) {
+	        						connected = false;
+	        						e.printStackTrace();
+	        						return;
+	        					} catch (IOException e) {
+	        						connected = false;
+	        						e.printStackTrace();
+	        						return;
+	        					} catch (InterruptedException e) {
+	        						connected = false;
+	        						e.printStackTrace();
+	        						return;
+	        					}
+	        				}
+	        			};
+	        			t.start();
+	        			
+	        			if(connected){
+	        				Toast.makeText(getApplicationContext(), "Username created!", Toast.LENGTH_SHORT).show();
+	        				
+	        			} else {
+	        				Toast.makeText(getApplicationContext(), "Connection problem!", Toast.LENGTH_SHORT).show();
+	        				connected = true;
+	        				return;
+	        			}
+	        			Intent intent =	new Intent( getApplicationContext(), Login.class); 
+	        	        startActivity(intent);
+	        		} else {
+	        			Toast.makeText(getApplicationContext(), "Invalid Input! Try Again!", Toast.LENGTH_SHORT).show();
+	        		}
+        			
+	            }
+	           }); 	
+
+}
+	
+}

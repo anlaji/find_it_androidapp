@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FindIt</string>
+    <string name="login">Login</string>
+    <string name="hello_world"><b>Introduce the name of this game:</b></string>
+    <string name="action_settings">Settings</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="enter">Enter</string>
+    <string name="log_into_the_game">Log into the game</string>
+    <string name="hintnumber">#</string>
+    <string name="bold_message"><b>Bold</b></string>
+    <string name="italics_message"><i>Italics</i></string>
+    <string name="underline_message"><u>Here your determinated coordinates will be shown</u></string>
+    <string name="save">Save</string>
+    <string name="video">Video</string>
+    <string name="text"><b>Text</b>Text</string>
+    <string name="picture">Picture</string>
+    <string name="import_"><b>Import</b></string>
+    <string name="fix"><b>Fix coordinates</b></string>
+    <string name="title_activity_create__game">Create_Game</string>
+    <string name="game_name">game name</string>
+    <string name="dialog_message">What do you want to do?</string>
+    <string name="dialog_title">Choose:</string>
+    <string name="title_activity_audio">Audio</string>
+    <string name="title_activity_picture">Picture</string>
+    <string name="title_activity_video">Video</string>
+    <string name="title_activity_text">Text</string>
+    <string name="cancel">Cancel</string>
+    <string name="Save_Picture">Save Picture</string>
+    <string name="Take_Picture">Take Picture</string>
+    <string name="login_image">Login</string>
+    <string name="record">Press to record you sound</string>
+    <string name="record_play">Press to play your record</string>
+    <string name="record_stop">Press to stop your record</string>
+    <string name="record_text">Record your audio</string>
+    <string name="audio">Audio</string>
+    <string name="choose_game">Choose your game!</string>
+    <string name="game_master">Game master:</string>
+    <string name="request">Request Hint!</string>
+    <string name="create_game">Create</string>
+    <string name="new_hint">New Hint</string>
+    <string name="create_player">Create new player</string>
+    <string name="latitude">Enter latitude</string>
+    <string name="longitude">Enter longitude</string>
+    <string name="coord">Your coordinates</string>
+    <string name="Create_Game">Create your game</string>
+    <string name="Create_Hint">Create a new hint</string>
+    <string name="audio_recorder">Audio Media Player</string>
+    <string name="game">List of games</string>
+    <string name="create_user">Create user</string>
+    <string name="playing_game">Find it!</string>
+    <string name="empty"></string>
+    <string name="getcoor">Use GPS</string>
+
+</resources>

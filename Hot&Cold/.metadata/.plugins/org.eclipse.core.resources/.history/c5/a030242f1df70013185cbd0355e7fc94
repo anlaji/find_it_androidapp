@@ -1,0 +1,22 @@
+package at.mms.hot_cold;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.app.Activity;
+import android.content.Intent;
+
+public class Game extends Activity {
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_choose_game);
+	}
+	
+//	 @Override
+    public void onBackPressed() {
+    	 Log.d("CDA", "onBackPressed Called");
+    	 finish();
+    	 Intent intent = new Intent(getApplicationContext(), Login.class);
+     	 startActivity(intent);
+    }
+	
+}

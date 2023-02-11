@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgame"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/game_master"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/game_master"
+        android:textSize="@dimen/game_master" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/game_master"
+        android:minWidth="@dimen/abc_panel_menu_list_width" />
+
+    <Button
+        android:id="@+id/request"
+        android:layout_width="134dp"
+        android:layout_height="43dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/buttonnew"
+        android:gravity="center_horizontal|center"
+        android:text="@string/request" />
+
+    <ListView
+        android:id="@+id/game_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+</LinearLayout>

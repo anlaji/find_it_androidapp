@@ -1,0 +1,98 @@
+package at.mms.hot_cold;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.UnknownHostException;
+import java.util.LinkedList;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+import android.app.Activity;
+import android.app.ListActivity;
+import android.content.Intent;
+
+public class Game extends Activity {
+	private ListView lv;
+    private ArrayAdapter<String> adapt;
+	boolean click=false;
+    LinkedList<String> hintLinkedList= new LinkedList<String>();
+    
+    @Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_choose_game);
+		Toast.makeText(getApplicationContext(), "Sorry-We are working on it!", Toast.LENGTH_SHORT).show();
+		/*lv = getListView();
+        lv.setTextFilterEnabled(true);
+        lv.setVisibility(View.VISIBLE);
+
+        lv.setOnItemClickListener(new OnItemClickListener() {
+        	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+				Toast.makeText(getApplicationContext(), "Sorry-We are working on it!", Toast.LENGTH_SHORT).show();
+               String file=((TextView) view).getText().toString();
+               try {
+            	   	FileInputStream fos1 = openFileInput(file);
+            	   	InputStreamReader input = new InputStreamReader(fos1);
+            	   	BufferedReader buffered= new BufferedReader(input);
+            	   	StringBuilder sb= new StringBuilder();
+            	   	String line;
+            	   	
+            	   	while ((line=buffered.readLine()) != null){
+            	   		sb.append(line);
+            	   	}
+            	   	fos1.close();
+               
+               } catch (FileNotFoundException e) {
+            	   Toast.makeText(getApplicationContext(), "File " + file + "not found", Toast.LENGTH_SHORT).show();
+               } catch (IOException e) {
+            	   Toast.makeText(getApplicationContext(), "IO Exception",Toast.LENGTH_SHORT).show();
+               }
+        	}
+        
+        });
+
+		//setContentView(R.layout.activity_choose_game);
+		Intent in = getIntent();
+        String tv1= in.getExtras().getString("Game");*/
+	}
+	
+//	 @Override
+    public void onBackPressed() {
+    	 Log.d("CDA", "onBackPressed Called");
+    	 finish();
+    	 Intent intent = new Intent(getApplicationContext(), Login.class);
+     	 startActivity(intent);
+    }
+    /*
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    	if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                String result=data.getStringExtra("Game");
+
+    	        click=true;
+				//get the created hint into the list
+                hintLinkedList.add(result);
+        		String[] flist=hintLinkedList.toArray(new String[hintLinkedList.size()]);
+                adapt = new ArrayAdapter<String>(this, R.layout.list_item, flist);
+                setListAdapter(adapt);
+ 		  	    }	 
+            }
+            if (resultCode == RESULT_CANCELED) {
+            }
+        }
+        
+	         */
+			
+    }
